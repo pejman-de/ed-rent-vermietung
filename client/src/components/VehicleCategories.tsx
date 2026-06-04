@@ -66,7 +66,7 @@ export default function VehicleCategories({ onSelectCategory }: VehicleCategorie
             Welches Fahrzeug brauchst du?
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Wähle deine Klasse. Alle gepflegt, alle sofort startklar, keine bösen Überraschungen auf dem Hof.
+            Wähle deine Klasse. Alle gepflegt, alle sofort startklar, keine Überraschungen.
           </p>
         </div>
 

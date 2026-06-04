@@ -20,7 +20,7 @@ export default function ProofBlock() {
       icon: Truck,
       title: "Hohe Kapazität",
       subtitle: "Immer das passende Modell",
-      description: "Saisonspitze oder Dauereinsatz, egal. Eigener Bestand und Partnernetzwerk sichern deine Mobilität.",
+      description: "Saisonspitze oder Dauereinsatz, egal. Eigener Bestand und Partnernetzwerk sichern Ihre Mobilität.",
       details: ["Junge, moderne Fahrzeugflotte", "Spezialaufbauten verfügbar", "Skalierbare Mietkonditionen"],
     },
   ];
@@ -30,7 +30,7 @@ export default function ProofBlock() {
       <div className="container">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-            Deine Mobilitätsgarantie vor Ort.
+            Ihre Mobilitätsgarantie vor Ort.
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
             Warum namhafte Logistiker und lokale Betriebe auf ED Rent & Sale setzen.

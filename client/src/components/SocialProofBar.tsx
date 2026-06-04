@@ -9,7 +9,7 @@ export default function SocialProofBar() {
             Fahrzeuge, die nicht streiken.
           </h2>
           <p className="mt-3 text-base text-brand-grey">
-            Top gewartet, ehrlich geprüft, sauber übergeben. Genau die Zuverlässigkeit, auf die dein Zeitplan baut.
+            Top gewartet, ehrlich geprüft, sauber übergeben. Genau die Zuverlässigkeit, auf die Ihr Zeitplan baut.
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function SocialProofBar() {
             <div className="p-5">
               <h3 className="text-lg font-bold text-brand-navy">Zuverlässige Übergabe</h3>
               <p className="mt-2 text-sm text-brand-grey leading-relaxed">
-                Persönliche Einweisung, alles erklärt, auf Wunsch direkt zu deiner Baustelle geliefert.
+                Persönliche Einweisung, alles erklärt, auf Wunsch direkt zu Ihrer Baustelle geliefert.
               </p>
             </div>
           </div>

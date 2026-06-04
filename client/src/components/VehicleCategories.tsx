@@ -63,10 +63,10 @@ export default function VehicleCategories({ onSelectCategory }: VehicleCategorie
       <div className="container">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-            Welches Fahrzeug brauchst du?
+            Welches Fahrzeug brauchen Sie?
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Wähle deine Klasse. Alle gepflegt, alle sofort startklar, keine Überraschungen.
+            Wählen Sie Ihre Klasse. Alle gepflegt, alle sofort startklar, keine bösen Überraschungen auf dem Hof.
           </p>
         </div>
 

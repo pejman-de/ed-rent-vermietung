@@ -27,7 +27,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
             </h1>
             
             <p className="max-w-xl text-lg text-brand-grey leading-relaxed md:text-xl">
-              Vom Sprinter bis zum Sattelzug. Geprüfte Fahrzeuge, fairer Preis, Versicherung auf Wunsch. Damit dein Fuhrpark rollt, auch wenn dein Fuhrpark gerade nicht mitspielt.
+              Vom Sprinter bis zum Sattelzug. Geprüfte Fahrzeuge, fairer Preis, Versicherung auf Wunsch. Damit Ihr Auftrag rollt, auch wenn Ihr Fuhrpark gerade nicht mitspielt.
             </p>
             
             <p className="text-xs text-brand-grey/80 italic">
@@ -108,7 +108,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
                   Premium-Mietfuhrpark für Logistik & Bau
                 </div>
                 <p className="text-xs text-white/80 leading-relaxed md:text-sm">
-                  Alle Fahrzeuge sind technisch geprüft und vollgetankt startklar. Hol dein Fahrzeug direkt bei uns ab oder lass es liefern. Den Rest erledigst du.
+                  Alle Fahrzeuge sind technisch geprüft und vollgetankt startklar. Holen Sie Ihr Fahrzeug direkt bei uns ab oder lassen Sie es liefern. Den Rest erledigen Sie.
                 </p>
               </div>
             </div>

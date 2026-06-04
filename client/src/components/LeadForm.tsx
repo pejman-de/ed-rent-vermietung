@@ -138,7 +138,7 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
       <div className="container max-w-4xl">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-            Dein Mietangebot in 24h.
+            Ihr Mietangebot in 24h.
           </h2>
           <p className="mt-3 text-lg text-brand-grey">
             Kostenlos, unverbindlich und ohne Verkaufsgespräch. Formular ausfüllen, Angebot abwarten, fertig.

@@ -20,7 +20,7 @@ export default function Footer({ onScrollToTop }: FooterProps) {
               ED RENT & SALE
             </span>
             <p className="text-sm text-brand-grey max-w-sm leading-relaxed">
-              Dein zuverlässiger B2B-Partner für hochwertige Nutzfahrzeuge im Raum Leichlingen, Köln und Düsseldorf. Flexibel, schnell und sauber gewartet.
+              Ihr zuverlässiger B2B-Partner für hochwertige Nutzfahrzeuge im Raum Leichlingen, Köln und Düsseldorf. Flexibel, schnell und sauber gewartet.
             </p>
             <div className="flex items-center gap-3 text-xs text-brand-grey">
               <Clock className="h-4 w-4 text-brand-cyan shrink-0" />

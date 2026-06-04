@@ -22,7 +22,7 @@ const steps = [
   {
     number: "4",
     title: "Fahrzeug übernehmen",
-    description: "Schlüssel holen oder liefern lassen. Und los geht's.",
+    description: "Schlüssel holen oder liefern lassen. Und schon rollt Ihr Auftrag.",
     icon: KeyRound,
   },
 ];
@@ -36,7 +36,7 @@ export default function ProcessSection() {
             In 4 Schritten zum Fahrzeug.
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Kein Papierkram-Marathon. Unser Prozess hält dich kurz auf und dein Geschäft am Laufen.
+            Kein Papierkram-Marathon. Unser Prozess hält Sie kurz auf und Ihr Geschäft am Laufen.
           </p>
         </div>
 

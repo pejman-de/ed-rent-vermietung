@@ -7,15 +7,15 @@ const faqs = [
   },
   {
     question: "Welche Versicherungen sind im Mietpreis enthalten?",
-    answer: "Eine Grunddeckung ist enthalten. Auf Wunsch buchst du ein Vollkasko-Paket dazu, damit du ruhig schlafen kannst.",
+    answer: "Eine Grunddeckung ist enthalten. Auf Wunsch buchen Sie ein Vollkasko-Paket dazu, damit Sie ruhig schlafen können.",
   },
   {
     question: "Kann ich den Mietvertrag flexibel verlängern?",
-    answer: "Ja. Sag uns rechtzeitig Bescheid und wir verlängern unkompliziert, solange das Fahrzeug verfügbar ist.",
+    answer: "Ja. Sagen Sie uns rechtzeitig Bescheid und wir verlängern unkompliziert, solange das Fahrzeug verfügbar ist.",
   },
   {
     question: "Bieten Sie auch eine Lieferung der Fahrzeuge an?",
-    answer: "Ja, auf Wunsch liefern wir direkt zu deiner Einsatzstelle. Such dir aus, ob du abholst oder wir kommen.",
+    answer: "Ja, auf Wunsch liefern wir direkt zu Ihrer Einsatzstelle. Sie entscheiden, ob Sie abholen oder wir kommen.",
   },
 ];
 
@@ -28,7 +28,7 @@ export default function FAQ() {
             Häufig gestellte Fragen.
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Schnelle Antworten, bevor du fragst. Falls etwas fehlt, melde dich einfach.
+            Schnelle Antworten, bevor Sie fragen. Falls etwas fehlt, melden Sie sich einfach.
           </p>
         </div>
 

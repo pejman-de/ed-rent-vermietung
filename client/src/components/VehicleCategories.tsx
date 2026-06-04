@@ -14,42 +14,42 @@ const categories: Category[] = [
     title: "Sprinter",
     icon: ShoppingBag,
     specs: ["Zul. Gesamtgewicht: 3,5t", "Ladevolumen: bis 14 m³", "Führerscheinklasse: B"],
-    description: "Ideal für schnelle Stadtlieferungen, Kurierdienste und kleinere Transporte.",
+    description: "Der Wendige für Stadt, Kurier und kleinere Touren. Passt in jede Lücke.",
   },
   {
     id: "transporter",
     title: "Transporter",
     icon: Truck,
     specs: ["Zul. Gesamtgewicht: 3,5t - 7,5t", "Nutzlast: bis 4t", "Kofferaufbau mit Hebebühne"],
-    description: "Der Allrounder für Verteilerverkehr und Umzüge mit Ladebordwand.",
+    description: "Der Allrounder mit Ladebordwand für Verteilerverkehr und Umzüge.",
   },
   {
     id: "wechselbruecke",
     title: "Wechselbrücke",
     icon: Layers,
     specs: ["System: BDF", "Fahrgestell: 2- oder 3-Achs", "Hubhöhe: Standard & Low"],
-    description: "Maximale Flexibilität für den kombinierten Ladungsverkehr und Systemlogistik.",
+    description: "Maximale Flexibilität für kombinierten Ladungsverkehr und Systemlogistik.",
   },
   {
     id: "kipper",
     title: "Kipper",
     icon: Construction,
     specs: ["3-Seiten-Kipper", "Allradantrieb optional", "Nutzlast: bis 18t"],
-    description: "Robust und geländegängig für Baustellen, Schüttgut und Erdarbeiten.",
+    description: "Robust und geländegängig. Für Baustelle, Schüttgut und alles, was Dreck macht.",
   },
   {
     id: "sattelzug",
     title: "Sattelzug",
     icon: Compass,
     specs: ["Sattelzugmaschine 4x2 / 6x2", "Euro 6 Abgasnorm", "Mietauflieger verfügbar"],
-    description: "Für den schweren Fernverkehr und maximale Ladekapazitäten auf Langstrecken.",
+    description: "Für den schweren Fernverkehr und volle Ladekapazität auf Langstrecke.",
   },
   {
     id: "gliederzug",
     title: "Gliederzug",
     icon: Navigation,
     specs: ["Motorwagen + Anhänger", "Durchladezug-Option", "Volumen: bis 120 m³"],
-    description: "Maximale Stellplatzkapazität und flexibles Handling im Fernverkehr.",
+    description: "Maximales Volumen, flexibles Handling. Wenn es richtig viel werden soll.",
   },
 ];
 
@@ -66,7 +66,7 @@ export default function VehicleCategories({ onSelectCategory }: VehicleCategorie
             Welches Fahrzeug brauchst du?
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Wähle die passende Fahrzeugklasse für dein Vorhaben. Alle unsere Fahrzeuge sind top gepflegt und sofort einsatzbereit.
+            Wähle deine Klasse. Alle gepflegt, alle sofort startklar, keine bösen Überraschungen auf dem Hof.
           </p>
         </div>
 

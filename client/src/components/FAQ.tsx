@@ -3,19 +3,19 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const faqs = [
   {
     question: "Wie schnell erhalte ich mein Mietangebot?",
-    answer: "Unser B2B-Serviceversprechen garantiert Ihnen ein maßgeschneidertes und unverbindliches Mietangebot innerhalb von 24 Stunden (an Werktagen). Oftmals liegt Ihnen das Angebot sogar schon nach wenigen Stunden vor.",
+    answer: "In der Regel innerhalb von 24 Stunden an Werktagen. Oft schneller, wenn das passende Fahrzeug bereitsteht.",
   },
   {
     question: "Welche Versicherungen sind im Mietpreis enthalten?",
-    answer: "Standardmäßig sind unsere Fahrzeuge haftpflichtversichert. Sie haben jedoch die Möglichkeit, ein umfassendes Vollkasko-Versicherungspaket mit reduzierter Selbstbeteiligung direkt im Buchungsprozess optional hinzuzufügen. Das sorgt für maximale Sicherheit während des gesamten Mietzeitraums.",
+    answer: "Eine Grunddeckung ist enthalten. Auf Wunsch buchst du ein Vollkasko-Paket dazu, damit du ruhig schlafen kannst.",
   },
   {
     question: "Kann ich den Mietvertrag flexibel verlängern?",
-    answer: "Ja, absolut. Wir wissen, dass sich Pläne im Logistik- und Baubereich schnell ändern können. Eine Verlängerung ist nach Absprache mit Ihrem persönlichen B2B-Ansprechpartner in der Regel unkompliziert möglich, sofern das Fahrzeug nicht bereits fest für einen Folgetermin verplant ist.",
+    answer: "Ja. Sag uns rechtzeitig Bescheid und wir verlängern unkompliziert, solange das Fahrzeug verfügbar ist.",
   },
   {
     question: "Bieten Sie auch eine Lieferung der Fahrzeuge an?",
-    answer: "Ja, neben der bequemen Selbstabholung an unserem verkehrsgünstig gelegenen Standort in Leichlingen bieten wir auch eine zuverlässige Lieferung direkt an Ihre gewünschte Einsatzstelle oder Ihr Betriebsgelände an. Die Konditionen hierfür berechnen wir individuell basierend auf der Entfernung.",
+    answer: "Ja, auf Wunsch liefern wir direkt zu deiner Einsatzstelle. Such dir aus, ob du abholst oder wir kommen.",
   },
 ];
 
@@ -28,7 +28,7 @@ export default function FAQ() {
             Häufig gestellte Fragen.
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Schnelle Antworten auf die wichtigsten Fragen rund um unsere Nutzfahrzeugvermietung.
+            Schnelle Antworten, bevor du fragst. Falls etwas fehlt, melde dich einfach.
           </p>
         </div>
 

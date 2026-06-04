@@ -4,25 +4,25 @@ const steps = [
   {
     number: "1",
     title: "Anfrage senden",
-    description: "Fülle unser kurzes Online-Formular in weniger als 2 Minuten aus oder ruf uns direkt an.",
+    description: "Formular in unter 2 Minuten ausfüllen oder kurz durchklingeln.",
     icon: MessageSquare,
   },
   {
     number: "2",
     title: "Angebot erhalten",
-    description: "Wir erstellen dein maßgeschneidertes, unverbindliches Mietangebot innerhalb von 24 Stunden.",
+    description: "Maßgeschneidert und unverbindlich, innerhalb von 24 Stunden.",
     icon: ClipboardCheck,
   },
   {
     number: "3",
     title: "Termin fixieren",
-    description: "Du bestätigst das Angebot und wir stimmen den Abhol- oder Liefertermin flexibel ab.",
+    description: "Angebot passt? Abhol- oder Liefertermin flexibel festlegen.",
     icon: CalendarRange,
   },
   {
     number: "4",
     title: "Fahrzeug übernehmen",
-    description: "Du holst das fahrbereite Fahrzeug ab oder wir liefern es direkt an deinen Einsatzort.",
+    description: "Schlüssel holen oder liefern lassen. Und los geht's.",
     icon: KeyRound,
   },
 ];
@@ -36,7 +36,7 @@ export default function ProcessSection() {
             In 4 Schritten zum Fahrzeug.
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Unser schlanker B2B-Prozess spart dir wertvolle Zeit, damit dein Betrieb nahtlos weiterlaufen kann.
+            Kein Papierkram-Marathon. Unser Prozess hält dich kurz auf und dein Geschäft am Laufen.
           </p>
         </div>
 

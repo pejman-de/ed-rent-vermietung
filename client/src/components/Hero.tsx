@@ -22,12 +22,12 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
             </div>
             
             <h1 className="text-4xl font-extrabold tracking-tight text-brand-navy sm:text-5xl md:text-6xl lg:leading-[1.1]">
-              Schnell einsatzbereit.
-              <span className="block text-brand-cyan mt-1">Mietangebot in 24h.</span>
+              Heute angefragt.
+              <span className="block text-brand-cyan mt-1">Morgen unterwegs.</span>
             </h1>
             
             <p className="max-w-xl text-lg text-brand-grey leading-relaxed md:text-xl">
-              Vom Sprinter bis zum Sattelzug. Standort Leichlingen, geprüfte Fahrzeuge, Versicherungspaket auf Wunsch.
+              Vom Sprinter bis zum Sattelzug. Geprüfte Fahrzeuge, fairer Preis, Versicherung auf Wunsch. Damit dein Fuhrpark rollt, auch wenn dein Fuhrpark gerade nicht mitspielt.
             </p>
             
             <p className="text-xs text-brand-grey/80 italic">
@@ -42,7 +42,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
               size="lg"
               className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base px-8 py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-97"
             >
-              Mietangebot anfordern
+              Mietangebot in 24h
             </Button>
             <Button
               onClick={onExploreClick}
@@ -62,7 +62,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-brand-navy">Angebot in 24h</span>
-                <span className="text-xs text-brand-grey">Garantiert schnell</span>
+                <span className="text-xs text-brand-grey">garantiert schnell</span>
               </div>
             </div>
             
@@ -72,7 +72,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-brand-navy">Bestand vor Ort</span>
-                <span className="text-xs text-brand-grey">In Leichlingen</span>
+                <span className="text-xs text-brand-grey">in Leichlingen</span>
               </div>
             </div>
             
@@ -82,7 +82,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-brand-navy">Versicherung optional</span>
-                <span className="text-xs text-brand-grey">Rundum geschützt</span>
+                <span className="text-xs text-brand-grey">rundum geschützt</span>
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
                   Premium-Mietfuhrpark für Logistik & Bau
                 </div>
                 <p className="text-xs text-white/80 leading-relaxed md:text-sm">
-                  Alle Fahrzeuge sind technisch geprüft, vollgetankt und bereit für Ihren Einsatz. Holen Sie Ihr Fahrzeug direkt an unserem Standort ab oder lassen Sie es sich liefern.
+                  Alle Fahrzeuge sind technisch geprüft und vollgetankt startklar. Hol dein Fahrzeug direkt bei uns ab oder lass es liefern. Den Rest erledigst du.
                 </p>
               </div>
             </div>

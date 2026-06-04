@@ -138,10 +138,10 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
       <div className="container max-w-4xl">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-            Mietangebot in 24h.
+            Dein Mietangebot in 24h.
           </h2>
           <p className="mt-3 text-lg text-brand-grey">
-            Kostenlos und unverbindlich. Füllen Sie das Formular aus und erhalten Sie Ihr Angebot.
+            Kostenlos, unverbindlich und ohne Verkaufsgespräch. Formular ausfüllen, Angebot abwarten, fertig.
           </p>
         </div>
 
@@ -402,7 +402,7 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                 disabled={isSubmitting}
                 className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98"
               >
-                {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern →"}
+                {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
               </Button>
             </form>
           )}

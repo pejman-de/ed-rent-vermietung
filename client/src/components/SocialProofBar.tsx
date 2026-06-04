@@ -6,10 +6,10 @@ export default function SocialProofBar() {
       <div className="container">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-2xl font-extrabold tracking-tight text-brand-navy sm:text-3xl">
-            Erfahrung mit Fahrzeugen führender Hersteller.
+            Fahrzeuge, die nicht streiken.
           </h2>
           <p className="mt-3 text-base text-brand-grey">
-            Wir garantieren höchste Qualität durch erstklassig gewartete Fahrzeuge und professionelle Abwicklung.
+            Top gewartet, ehrlich geprüft, sauber übergeben. Genau die Zuverlässigkeit, auf die dein Zeitplan baut.
           </p>
         </div>
 
@@ -31,7 +31,7 @@ export default function SocialProofBar() {
             <div className="p-5">
               <h3 className="text-lg font-bold text-brand-navy">Großer Fuhrpark vor Ort</h3>
               <p className="mt-2 text-sm text-brand-grey leading-relaxed">
-                Direkter Zugriff auf eine Vielzahl von Fahrzeugklassen an unserem zentralen Standort in Leichlingen.
+                Viele Fahrzeugklassen an einem zentralen Standort in Leichlingen. Wahrscheinlich steht das passende schon bereit.
               </p>
             </div>
           </div>
@@ -52,7 +52,7 @@ export default function SocialProofBar() {
             <div className="p-5">
               <h3 className="text-lg font-bold text-brand-navy">Geprüfte Qualität</h3>
               <p className="mt-2 text-sm text-brand-grey leading-relaxed">
-                Jedes Fahrzeug durchläuft vor der Übergabe einen strengen Sicherheitscheck in unserer modernen Werkstatt.
+                Jedes Fahrzeug läuft vor der Übergabe durch unsere Werkstatt. Pannen überlassen wir lieber der Konkurrenz.
               </p>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function SocialProofBar() {
             <div className="p-5">
               <h3 className="text-lg font-bold text-brand-navy">Zuverlässige Übergabe</h3>
               <p className="mt-2 text-sm text-brand-grey leading-relaxed">
-                Persönliche Einweisung und flexible Bereitstellung – auf Wunsch liefern wir auch direkt zu Ihrer Einsatzstelle.
+                Persönliche Einweisung, alles erklärt, auf Wunsch direkt zu deiner Baustelle geliefert.
               </p>
             </div>
           </div>

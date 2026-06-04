@@ -6,21 +6,21 @@ export default function ProofBlock() {
       icon: MapPin,
       title: "Standort Leichlingen",
       subtitle: "Zentral & gut erreichbar",
-      description: "Unser Betriebshof in Leichlingen liegt strategisch ideal im Raum Köln/Düsseldorf. Schnelle Anfahrtswege garantieren Ihnen minimale Ausfallzeiten bei Abholung oder Tausch.",
-      details: ["Direkte Autobahnanbindung", "Großes Gelände für Probefahrten", "Flexible Abholzeiten"],
+      description: "Strategisch günstig im Raum Köln/Düsseldorf. Kurze Wege bedeuten weniger Ausfallzeit bei Abholung und Tausch.",
+      details: ["Direkte Autobahnanbindung", "Großes Gelände für Übergaben", "Flexible Abholzeiten"],
     },
     {
       icon: CheckCircle,
       title: "Reibungsloser Prozess",
       subtitle: "Keine B2B-Bürokratie",
-      description: "Wir verstehen, dass im Transportwesen jede Stunde zählt. Daher haben wir alle bürokratischen Hürden minimiert. Von der Anfrage bis zur Schlüsselübergabe in Rekordzeit.",
+      description: "Im Transportwesen zählt jede Stunde. Darum halten wir alles schlank, von der Anfrage bis zur Übergabe.",
       details: ["Digitale Vertragsabwicklung", "Fester B2B-Ansprechpartner", "Schnelle Schadensregulierung"],
     },
     {
       icon: Truck,
       title: "Hohe Kapazität",
       subtitle: "Immer das passende Modell",
-      description: "Egal ob saisonale Auftragsspitzen oder langfristige Fuhrparkerweiterung: Durch unseren vielseitigen Eigenbestand und Partnernetzwerke sichern wir Ihre Mobilität ab.",
+      description: "Saisonspitze oder Dauereinsatz, egal. Eigener Bestand und Partnernetzwerk sichern deine Mobilität.",
       details: ["Junge, moderne Fahrzeugflotte", "Spezialaufbauten verfügbar", "Skalierbare Mietkonditionen"],
     },
   ];
@@ -33,7 +33,7 @@ export default function ProofBlock() {
             Deine Mobilitätsgarantie vor Ort.
           </h2>
           <p className="mt-4 text-lg text-brand-grey">
-            Warum sich namhafte Logistiker und lokale Betriebe auf ED Rent & Sale verlassen.
+            Warum namhafte Logistiker und lokale Betriebe auf ED Rent & Sale setzen.
           </p>
         </div>
 

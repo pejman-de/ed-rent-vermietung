@@ -3,22 +3,22 @@ export default function TrustMetrics() {
     {
       value: "24h",
       label: "Reaktionszeit",
-      description: "Garantiertes Mietangebot innerhalb eines Werktages vorliegen.",
+      description: "Angebot garantiert innerhalb eines Werktags.",
     },
     {
       value: "100%",
       label: "Geprüfte Qualität",
-      description: "Jedes Fahrzeug durchläuft vor Übergabe unseren Meister-Check.",
+      description: "Jedes Fahrzeug durch unseren Meister-Check.",
     },
     {
       value: "Optional",
       label: "Versicherungspaket",
-      description: "Vollkasko-Schutz flexibel für jedes Mietfahrzeug zubuchbar.",
+      description: "Vollkasko-Schutz für jedes Fahrzeug zubuchbar.",
     },
     {
       value: "+ Aufbau",
       label: "Sonderausstattung",
-      description: "Ladebordwand, Koffer- oder Kipperaufbau nach Bedarf.",
+      description: "Ladebordwand, Kühler oder Kipper, je nach Bedarf.",
     },
   ];
 

@@ -10,11 +10,11 @@ export default function Header({ onCtaClick }: HeaderProps) {
     <header className="sticky top-0 z-50 w-full border-b border-brand-grey/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container flex h-20 items-center justify-between">
         {/* Image Logo */}
-        <div className="flex items-center">
+        <div className="flex items-center py-2">
           <img 
             src="/manus-storage/ED_Rent_Logo_Farbig_Freisteller_f5ce95ec.webp" 
             alt="ED Rent & Sale Logo" 
-            className="h-14 w-auto object-contain py-1"
+            className="h-24 md:h-28 w-auto object-contain"
           />
         </div>
 

@@ -18,9 +18,9 @@ export default function Footer({ onScrollToTop }: FooterProps) {
           <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center">
               <img 
-                src="/manus-storage/ED_Rent_Logo_Farbig_Freisteller_f5ce95ec.webp" 
+                src="/manus-storage/ED_Rent_Logo_Cropped_1427a237.webp" 
                 alt="ED Rent & Sale Logo" 
-                className="h-28 md:h-32 w-auto object-contain brightness-0 invert"
+                className="h-16 md:h-20 w-auto object-contain brightness-0 invert"
               />
             </div>
             <p className="text-sm text-brand-grey max-w-sm leading-relaxed">

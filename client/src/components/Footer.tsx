@@ -16,9 +16,13 @@ export default function Footer({ onScrollToTop }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-12">
           {/* Column 1: Brand & Bio */}
           <div className="lg:col-span-5 space-y-6">
-            <span className="text-xl font-extrabold tracking-wider text-white">
-              ED RENT & SALE
-            </span>
+            <div className="flex items-center">
+              <img 
+                src="/manus-storage/ED_Rent_Logo_Farbig_Freisteller_f5ce95ec.webp" 
+                alt="ED Rent & Sale Logo" 
+                className="h-16 w-auto object-contain brightness-0 invert"
+              />
+            </div>
             <p className="text-sm text-brand-grey max-w-sm leading-relaxed">
               Ihr zuverlässiger B2B-Partner für hochwertige Nutzfahrzeuge im Raum Leichlingen, Köln und Düsseldorf. Flexibel, schnell und sauber gewartet.
             </p>

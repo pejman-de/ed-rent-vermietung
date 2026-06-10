@@ -9,11 +9,13 @@ export default function Header({ onCtaClick }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-brand-grey/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container flex h-20 items-center justify-between">
-        {/* Text Logo */}
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-extrabold tracking-wider text-brand-navy md:text-2xl">
-            ED RENT & SALE
-          </span>
+        {/* Image Logo */}
+        <div className="flex items-center">
+          <img 
+            src="/manus-storage/ED_Rent_Logo_Farbig_Freisteller_f5ce95ec.webp" 
+            alt="ED Rent & Sale Logo" 
+            className="h-14 w-auto object-contain py-1"
+          />
         </div>
 
         {/* Right side contact & CTA */}

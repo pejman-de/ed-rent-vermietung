@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Clock, ArrowUp } from "lucide-react";
+import { Link } from "wouter";
 
 interface FooterProps {
   onScrollToTop: () => void;
@@ -69,10 +70,10 @@ export default function Footer({ onScrollToTop }: FooterProps) {
               </h4>
               <ul className="space-y-2.5 text-sm text-brand-grey">
                 <li>
-                  <a href="#" className="hover:text-brand-cyan transition-colors">Impressum</a>
+                  <Link href="/impressum" className="hover:text-brand-cyan transition-colors">Impressum</Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-brand-cyan transition-colors">Datenschutzerklärung</a>
+                  <Link href="/datenschutz" className="hover:text-brand-cyan transition-colors">Datenschutzerklärung</Link>
                 </li>
                 <li>
                   <a href="#" className="hover:text-brand-cyan transition-colors">AGB (Mietbedingungen)</a>

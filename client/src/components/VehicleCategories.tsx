@@ -20,7 +20,7 @@ const categories: Category[] = [
     id: "transporter",
     title: "Transporter",
     icon: Truck,
-    specs: ["Zul. Gesamtgewicht: 3,5t - 7,5t", "Nutzlast: bis 4t", "Kofferaufbau mit Hebebühne"],
+    specs: ["Zul. Gesamtgewicht: 3,5t - 7,5t", "Kofferaufbau mit Hebebühne"],
     description: "Der Allrounder mit Ladebordwand für Verteilerverkehr und Umzüge.",
   },
   {
@@ -34,7 +34,7 @@ const categories: Category[] = [
     id: "kipper",
     title: "Kipper",
     icon: Construction,
-    specs: ["3-Seiten-Kipper", "Allradantrieb optional", "Nutzlast: bis 18t"],
+    specs: ["3-Seiten-Kipper", "Allradantrieb optional"],
     description: "Robust und geländegängig. Für Baustelle, Schüttgut und alles, was Dreck macht.",
   },
   {

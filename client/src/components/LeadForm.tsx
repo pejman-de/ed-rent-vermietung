@@ -15,15 +15,16 @@ import { toast } from "sonner";
 // Zod validation schema
 const formSchema = z.object({
   fahrzeugtyp: z.string().min(1, "Bitte wählen Sie einen Fahrzeugtyp."),
+  tonnage: z.string().min(1, "Bitte wähle die gewünschte Tonnage."),
   mietdauer: z.string().min(1, "Bitte wählen Sie die Mietdauer."),
   starttermin: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Bitte geben Sie ein gültiges Startdatum an.",
   }),
   plz: z.string().min(3, "Bitte geben Sie eine gültige PLZ oder Region ein."),
   bereitstellung: z.string().min(1, "Bitte wählen Sie eine Option."),
-  ueber75t: z.enum(["ja", "nein"]),
   firmaName: z.string().min(3, "Bitte geben Sie Ihren Firmennamen und Namen an."),
   telefon: z.string().min(5, "Bitte geben Sie eine gültige Telefonnummer an."),
+  email: z.string().email("Bitte gib eine gültige E-Mail-Adresse an."),
   nachricht: z.string().optional(),
   versicherung: z.boolean().default(false),
   // Hidden fields
@@ -40,17 +41,14 @@ function calculateLeadScore(data: FormData): { score: "Category A (Hot)" | "Cate
   const start = new Date(data.starttermin);
   const diffTime = start.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  const isOver75t = data.ueber75t === "ja";
   
   // Parse Mietdauer for scoring
   const isLongTerm = data.mietdauer === "30plus" || data.mietdauer === "90plus";
 
   // Category A (Hot) conditions:
   // - Starttermin < 7 days from today
-  // - OR Fahrzeugklasse > 7,5t == Yes
   // - OR Mietdauer > 30 days
-  if (diffDays < 7 || isOver75t || isLongTerm) {
+  if (diffDays < 7 || isLongTerm) {
     return { score: "Category A (Hot)", points: 100 };
   }
 
@@ -84,13 +82,14 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
     resolver: zodResolver(formSchema),
     defaultValues: {
       fahrzeugtyp: "",
+      tonnage: "",
       mietdauer: "",
       starttermin: "",
       plz: "",
       bereitstellung: "",
-      ueber75t: "nein",
       firmaName: "",
       telefon: "",
+      email: "",
       nachricht: "",
       versicherung: false,
       offer_type: "vermietung",
@@ -203,6 +202,31 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                     )}
                   </div>
 
+                  {/* Gewünschte Tonnage */}
+                  <div className="space-y-2">
+                    <Label htmlFor="tonnage" className="font-semibold text-brand-navy">Gewünschte Tonnage *</Label>
+                    <Select
+                      value={watch("tonnage")}
+                      onValueChange={(val) => setValue("tonnage", val, { shouldValidate: true })}
+                    >
+                      <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+                        <SelectValue placeholder="Bitte wählen..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="2_6t">2,6 t</SelectItem>
+                        <SelectItem value="3_5t">3,5 t</SelectItem>
+                        <SelectItem value="5_5t">5,5 t</SelectItem>
+                        <SelectItem value="7_5t">7,5 t</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {errors.tonnage && (
+                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                        <AlertCircle className="h-3.5 w-3.5" />
+                        <span>{errors.tonnage.message}</span>
+                      </p>
+                    )}
+                  </div>
+
                   {/* Mietdauer */}
                   <div className="space-y-2">
                     <Label htmlFor="mietdauer" className="font-semibold text-brand-navy">Mietdauer *</Label>
@@ -289,25 +313,6 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       </p>
                     )}
                   </div>
-
-                  {/* Fahrzeugklasse über 7,5t */}
-                  <div className="space-y-3">
-                    <Label className="font-semibold text-brand-navy block">Fahrzeugklasse über 7,5t? *</Label>
-                    <RadioGroup
-                      value={watch("ueber75t")}
-                      onValueChange={(val) => setValue("ueber75t", val as "ja" | "nein")}
-                      className="flex gap-6 pt-1"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="ja" id="over-75-yes" className="border-brand-grey text-brand-cyan focus:ring-brand-cyan" />
-                        <Label htmlFor="over-75-yes" className="font-medium text-brand-navy cursor-pointer">Ja</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="nein" id="over-75-no" className="border-brand-grey text-brand-cyan focus:ring-brand-cyan" />
-                        <Label htmlFor="over-75-no" className="font-medium text-brand-navy cursor-pointer">Nein</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
                 </div>
               </div>
 
@@ -351,6 +356,30 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
                         <AlertCircle className="h-3.5 w-3.5" />
                         <span>{errors.telefon.message}</span>
+                      </p>
+                    )}
+                    <p className="text-xs text-brand-grey mt-1">
+                      Lieber telefonisch? Festnetz-Durchwahl:{" "}
+                      <a href="tel:+4921758845535" className="text-brand-cyan hover:underline">
+                        +49 2175 8845535
+                      </a>
+                    </p>
+                  </div>
+
+                  {/* E-Mail */}
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="email" className="font-semibold text-brand-navy">E-Mail *</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder="z.B. info@firma.de"
+                      {...register("email")}
+                      className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                    />
+                    {errors.email && (
+                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                        <AlertCircle className="h-3.5 w-3.5" />
+                        <span>{errors.email.message}</span>
                       </p>
                     )}
                   </div>

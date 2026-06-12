@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useEffect, forwardRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -256,16 +257,24 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                         : "bg-brand-cyan/20 text-brand-navy"
                     }`}
                   >
-                    "2"
+                    2
                   </div>
                   <span className="text-xs font-bold text-brand-navy mt-2">Ihre Kontaktdaten</span>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                {/* SCHRITT 1: Fahrzeugdetails */}
-                {step === 1 && (
-                  <div className="space-y-8 animate-fadeIn">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  {/* SCHRITT 1: Fahrzeugdetails */}
+                  {step === 1 && (
+                    <motion.div
+                      key="step1"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="space-y-8"
+                    >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Fahrzeugtyp */}
                       <div className="space-y-2">
@@ -466,21 +475,28 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       </div>
                     </div>
 
-                    {/* Button Schritt 1 */}
-                    <Button
-                      type="button"
-                      onClick={handleNextStep}
-                      className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex items-center justify-center gap-2"
-                    >
-                      <span>Weiter zu Schritt 2</span>
-                      <ArrowRight className="h-5 w-5" />
-                    </Button>
-                  </div>
-                )}
+                      {/* Button Schritt 1 */}
+                      <Button
+                        type="button"
+                        onClick={handleNextStep}
+                        className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex items-center justify-center gap-2"
+                      >
+                        <span>Weiter zu Schritt 2</span>
+                        <ArrowRight className="h-5 w-5" />
+                      </Button>
+                    </motion.div>
+                  )}
 
-                {/* SCHRITT 2: Kontaktdaten */}
-                {step === 2 && (
-                  <div className="space-y-8 animate-fadeIn">
+                  {/* SCHRITT 2: Kontaktdaten */}
+                  {step === 2 && (
+                    <motion.div
+                      key="step2"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="space-y-8"
+                    >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Vorname */}
                       <div className="space-y-2">
@@ -579,27 +595,28 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       </div>
                     </div>
 
-                    {/* Buttons Schritt 2 */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <Button
-                        type="button"
-                        onClick={handlePrevStep}
-                        variant="outline"
-                        className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold py-6 flex-1 flex items-center justify-center gap-2"
-                      >
-                        <ArrowLeft className="h-5 w-5" />
-                        <span>Zurück</span>
-                      </Button>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1"
-                      >
-                        {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
-                      </Button>
-                    </div>
-                  </div>
-                )}
+                      {/* Buttons Schritt 2 */}
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <Button
+                          type="button"
+                          onClick={handlePrevStep}
+                          variant="outline"
+                          className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold py-6 flex-1 flex items-center justify-center gap-2"
+                        >
+                          <ArrowLeft className="h-5 w-5" />
+                          <span>Zurück</span>
+                        </Button>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1"
+                        >
+                          {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Hidden Fields */}
                 <input type="hidden" {...register("offer_type")} />

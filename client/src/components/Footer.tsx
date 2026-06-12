@@ -42,9 +42,9 @@ export default function Footer({ onScrollToTop }: FooterProps) {
               <li className="flex items-start gap-3 text-sm text-brand-grey">
                 <MapPin className="h-5 w-5 text-brand-cyan shrink-0 mt-0.5" />
                 <span>
-                  ED Rent & Sale<br />
-                  Am Sportplatz 12<br />
-                  42799 Leichlingen
+                  ED Rent and Sale<br />
+                  Bremsen 13 A<br />
+                  42799 Leichlingen (Rheinland)
                 </span>
               </li>
               <li className="flex items-center gap-3 text-sm text-brand-grey">
@@ -55,8 +55,8 @@ export default function Footer({ onScrollToTop }: FooterProps) {
               </li>
               <li className="flex items-center gap-3 text-sm text-brand-grey">
                 <Mail className="h-5 w-5 text-brand-cyan shrink-0" />
-                <a href="mailto:info@ed-rent-sale.de" className="hover:text-brand-cyan transition-colors">
-                  info@ed-rent-sale.de
+                <a href="mailto:info@ed-rent.com" className="hover:text-brand-cyan transition-colors">
+                  info@ed-rent.com
                 </a>
               </li>
             </ul>

@@ -586,12 +586,7 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                             <span>{errors.telefon.message as string}</span>
                           </p>
                         )}
-                        <p className="text-xs text-brand-grey mt-1">
-                          Lieber telefonisch? Festnetz-Durchwahl:{" "}
-                          <a href="tel:+4921758845535" className="text-brand-cyan hover:underline">
-                            +49 2175 8845535
-                          </a>
-                        </p>
+
                       </div>
                     </div>
 

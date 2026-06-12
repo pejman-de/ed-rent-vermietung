@@ -9,31 +9,56 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { CalendarIcon, Shield, CheckCircle2, AlertCircle } from "lucide-react";
+import { CalendarIcon, Shield, CheckCircle2, AlertCircle, ArrowRight, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 // Zod validation schema
 const formSchema = z.object({
+  // Schritt 1
   fahrzeugtyp: z.string().min(1, "Bitte wählen Sie einen Fahrzeugtyp."),
-  tonnage: z.string().min(1, "Bitte wähle die gewünschte Tonnage."),
+  tonnage: z.string().min(1, "Bitte wählen Sie die gewünschte Tonnage."),
   mietdauer: z.string().min(1, "Bitte wählen Sie die Mietdauer."),
   starttermin: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Bitte geben Sie ein gültiges Startdatum an.",
   }),
   plz: z.string().min(3, "Bitte geben Sie eine gültige PLZ oder Region ein."),
   bereitstellung: z.string().min(1, "Bitte wählen Sie eine Option."),
-  firmaName: z.string().min(3, "Bitte geben Sie Ihren Firmennamen und Namen an."),
-  telefon: z.string().min(5, "Bitte geben Sie eine gültige Telefonnummer an."),
-  email: z.string().email("Bitte gib eine gültige E-Mail-Adresse an."),
+  ueber75t: z.string().min(1, "Bitte wählen Sie eine Option."),
   nachricht: z.string().optional(),
-  versicherung: z.boolean().default(false),
+  versicherung: z.boolean(),
+
+  // Schritt 2
+  vorname: z.string().min(2, "Bitte geben Sie Ihren Vornamen an."),
+  nachname: z.string().min(2, "Bitte geben Sie Ihren Nachnamen an."),
+  unternehmen: z.string().min(2, "Bitte geben Sie Ihr Unternehmen an."),
+  email: z.string().min(1, "Bitte geben Sie Ihre E-Mail-Adresse an.").email("Bitte geben Sie eine gültige E-Mail-Adresse an."),
+  telefon: z.string().optional(),
+
   // Hidden fields
-  offer_type: z.string().default("vermietung"),
-  lead_path: z.string().default("direct"),
-  page_variant: z.string().default("lp-vermietung"),
+  offer_type: z.string(),
+  lead_path: z.string(),
+  page_variant: z.string(),
 });
 
-type FormData = z.infer<typeof formSchema>;
+interface FormData {
+  fahrzeugtyp: string;
+  tonnage: string;
+  mietdauer: string;
+  starttermin: string;
+  plz: string;
+  bereitstellung: string;
+  ueber75t: string;
+  nachricht?: string;
+  versicherung: boolean;
+  vorname: string;
+  nachname: string;
+  unternehmen: string;
+  email: string;
+  telefon?: string;
+  offer_type: string;
+  lead_path: string;
+  page_variant: string;
+}
 
 // Lead Scoring Algorithm Utility
 function calculateLeadScore(data: FormData): { score: "Category A (Hot)" | "Category B (Warm)" | "Category C (Cold)"; points: number } {
@@ -68,6 +93,7 @@ interface LeadFormProps {
 }
 
 const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }, ref) => {
+  const [step, setStep] = useState<1 | 2>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -76,10 +102,12 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: "onTouched",
     defaultValues: {
       fahrzeugtyp: "",
       tonnage: "",
@@ -87,11 +115,14 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
       starttermin: "",
       plz: "",
       bereitstellung: "",
-      firmaName: "",
-      telefon: "",
-      email: "",
+      ueber75t: "",
       nachricht: "",
       versicherung: false,
+      vorname: "",
+      nachname: "",
+      unternehmen: "",
+      email: "",
+      telefon: "",
       offer_type: "vermietung",
       lead_path: "direct",
       page_variant: "lp-vermietung",
@@ -103,15 +134,36 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
     if (selectedCategory) {
       const lowerCategory = selectedCategory.toLowerCase();
       setValue("fahrzeugtyp", lowerCategory);
+      setStep(1); // Immer auf Schritt 1 starten bei Kachel-Klick
     }
   }, [selectedCategory, setValue]);
+
+  const handleNextStep = async () => {
+    // Validieren Sie AUSSCHLIESSLICH die Felder von Schritt 1
+    const valid = await trigger([
+      "fahrzeugtyp",
+      "tonnage",
+      "mietdauer",
+      "starttermin",
+      "plz",
+      "bereitstellung",
+      "ueber75t",
+    ]);
+    if (valid) {
+      setStep(2);
+    }
+  };
+
+  const handlePrevStep = () => {
+    setStep(1);
+  };
 
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
     
     try {
       // Calculate Lead Score
-      const leadScore = calculateLeadScore(data as FormData);
+      const leadScore = calculateLeadScore(data);
       
       // Log the payload and score to console as required by spec
       console.group("📥 ED Rent & Sale - Lead Form Submission");
@@ -125,6 +177,7 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
       setIsSuccess(true);
       toast.success("Anfrage erfolgreich gesendet! Wir melden uns in Kürze.");
       reset();
+      setStep(1); // Zurück auf Schritt 1 nach erfolgreichem Reset
     } catch (error) {
       toast.error("Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut.");
     } finally {
@@ -159,281 +212,401 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                 </p>
               </div>
               <Button 
-                onClick={() => setIsSuccess(false)}
+                onClick={() => {
+                  setIsSuccess(false);
+                  setStep(1);
+                }}
                 className="bg-brand-navy text-white hover:bg-brand-navy/90 font-semibold px-6"
               >
                 Weitere Anfrage senden
               </Button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-              {/* Step 1: Vehicle Specs */}
-              <div>
-                <h3 className="text-lg font-bold text-brand-navy mb-4 pb-2 border-b border-brand-grey/10 flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-cyan/20 text-brand-navy text-xs font-bold">1</span>
-                  Fahrzeugdetails
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Fahrzeugtyp */}
-                  <div className="space-y-2">
-                    <Label htmlFor="fahrzeugtyp" className="font-semibold text-brand-navy">Fahrzeugtyp *</Label>
-                    <Select
-                      value={watch("fahrzeugtyp")}
-                      onValueChange={(val) => setValue("fahrzeugtyp", val, { shouldValidate: true })}
-                    >
-                      <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                        <SelectValue placeholder="Bitte wählen..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="sprinter">Sprinter (bis 3,5t)</SelectItem>
-                        <SelectItem value="transporter">Transporter (3,5t - 7,5t)</SelectItem>
-                        <SelectItem value="wechselbruecke">Wechselbrücke (BDF System)</SelectItem>
-                        <SelectItem value="kipper">Kipper (Bau & Schüttgut)</SelectItem>
-                        <SelectItem value="sattelzug">Sattelzug (Schwerer Fernverkehr)</SelectItem>
-                        <SelectItem value="gliederzug">Gliederzug (Großvolumen)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.fahrzeugtyp && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.fahrzeugtyp.message}</span>
-                      </p>
-                    )}
-                  </div>
+            <div className="space-y-8">
+              {/* Fortschrittsanzeige */}
+              <div className="relative flex items-center justify-between max-w-md mx-auto mb-10">
+                {/* Verbindungslinie */}
+                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-brand-grey/20 -z-0">
+                  <div 
+                    className="h-full bg-brand-cyan transition-all duration-300"
+                    style={{ width: step === 2 ? "100%" : "0%" }}
+                  />
+                </div>
 
-                  {/* Gewünschte Tonnage */}
-                  <div className="space-y-2">
-                    <Label htmlFor="tonnage" className="font-semibold text-brand-navy">Gewünschte Tonnage *</Label>
-                    <Select
-                      value={watch("tonnage")}
-                      onValueChange={(val) => setValue("tonnage", val, { shouldValidate: true })}
-                    >
-                      <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                        <SelectValue placeholder="Bitte wählen..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="2_6t">2,6 t</SelectItem>
-                        <SelectItem value="3_5t">3,5 t</SelectItem>
-                        <SelectItem value="5_5t">5,5 t</SelectItem>
-                        <SelectItem value="7_5t">7,5 t</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.tonnage && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.tonnage.message}</span>
-                      </p>
-                    )}
+                {/* Schritt 1 */}
+                <div className="flex flex-col items-center relative z-10">
+                  <div 
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
+                      step === 2 
+                        ? "bg-brand-cyan text-brand-navy" 
+                        : "bg-brand-cyan text-brand-navy ring-4 ring-brand-cyan/20"
+                    }`}
+                  >
+                    {step === 2 ? <CheckCircle2 className="h-5 w-5" /> : "1"}
                   </div>
+                  <span className="text-xs font-bold text-brand-navy mt-2">Fahrzeugdetails</span>
+                </div>
 
-                  {/* Mietdauer */}
-                  <div className="space-y-2">
-                    <Label htmlFor="mietdauer" className="font-semibold text-brand-navy">Mietdauer *</Label>
-                    <Select
-                      value={watch("mietdauer")}
-                      onValueChange={(val) => setValue("mietdauer", val, { shouldValidate: true })}
-                    >
-                      <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                        <SelectValue placeholder="Bitte wählen..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1-7">Tagesmiete (1 - 7 Tage)</SelectItem>
-                        <SelectItem value="8-30">Wochenmiete (8 - 30 Tage)</SelectItem>
-                        <SelectItem value="30plus">Monatsmiete (1 - 3 Monate)</SelectItem>
-                        <SelectItem value="90plus">Langzeitmiete (&gt; 3 Monate)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.mietdauer && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.mietdauer.message}</span>
-                      </p>
-                    )}
+                {/* Schritt 2 */}
+                <div className="flex flex-col items-center relative z-10">
+                  <div 
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
+                      step === 2 
+                        ? "bg-brand-cyan text-brand-navy ring-4 ring-brand-cyan/20" 
+                        : "bg-brand-cyan/20 text-brand-navy"
+                    }`}
+                  >
+                    "2"
                   </div>
+                  <span className="text-xs font-bold text-brand-navy mt-2">Ihre Kontaktdaten</span>
+                </div>
+              </div>
 
-                  {/* Starttermin */}
-                  <div className="space-y-2">
-                    <Label htmlFor="starttermin" className="font-semibold text-brand-navy">Gewünschter Starttermin *</Label>
-                    <div className="relative">
-                      <Input
-                        type="date"
-                        id="starttermin"
-                        {...register("starttermin")}
-                        className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white pl-10"
-                        min={new Date().toISOString().split("T")[0]}
-                      />
-                      <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-brand-grey" />
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                {/* SCHRITT 1: Fahrzeugdetails */}
+                {step === 1 && (
+                  <div className="space-y-8 animate-fadeIn">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Fahrzeugtyp */}
+                      <div className="space-y-2">
+                        <Label htmlFor="fahrzeugtyp" className="font-semibold text-brand-navy">Fahrzeugtyp *</Label>
+                        <Select
+                          value={watch("fahrzeugtyp")}
+                          onValueChange={(val) => setValue("fahrzeugtyp", val, { shouldValidate: true })}
+                        >
+                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+                            <SelectValue placeholder="Bitte wählen..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="sprinter">Sprinter (bis 3,5t)</SelectItem>
+                            <SelectItem value="transporter">Transporter (3,5t - 7,5t)</SelectItem>
+                            <SelectItem value="wechselbruecke">Wechselbrücke (BDF System)</SelectItem>
+                            <SelectItem value="kipper">Kipper (Bau & Schüttgut)</SelectItem>
+                            <SelectItem value="sattelzug">Sattelzug (Schwerer Fernverkehr)</SelectItem>
+                            <SelectItem value="gliederzug">Gliederzug (Großvolumen)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.fahrzeugtyp && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.fahrzeugtyp.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Gewünschte Tonnage */}
+                      <div className="space-y-2">
+                        <Label htmlFor="tonnage" className="font-semibold text-brand-navy">Gewünschte Tonnage *</Label>
+                        <Select
+                          value={watch("tonnage")}
+                          onValueChange={(val) => setValue("tonnage", val, { shouldValidate: true })}
+                        >
+                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+                            <SelectValue placeholder="Bitte wählen..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="2_6t">2,6 t</SelectItem>
+                            <SelectItem value="3_5t">3,5 t</SelectItem>
+                            <SelectItem value="5_5t">5,5 t</SelectItem>
+                            <SelectItem value="7_5t">7,5 t</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.tonnage && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.tonnage.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Mietdauer */}
+                      <div className="space-y-2">
+                        <Label htmlFor="mietdauer" className="font-semibold text-brand-navy">Mietdauer *</Label>
+                        <Select
+                          value={watch("mietdauer")}
+                          onValueChange={(val) => setValue("mietdauer", val, { shouldValidate: true })}
+                        >
+                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+                            <SelectValue placeholder="Bitte wählen..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1-7">Tagesmiete (1 - 7 Tage)</SelectItem>
+                            <SelectItem value="8-30">Wochenmiete (8 - 30 Tage)</SelectItem>
+                            <SelectItem value="30plus">Monatsmiete (1 - 3 Monate)</SelectItem>
+                            <SelectItem value="90plus">Langzeitmiete (&gt; 3 Monate)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.mietdauer && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.mietdauer.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Starttermin */}
+                      <div className="space-y-2">
+                        <Label htmlFor="starttermin" className="font-semibold text-brand-navy">Gewünschter Starttermin *</Label>
+                        <div className="relative">
+                          <Input
+                            type="date"
+                            id="starttermin"
+                            {...register("starttermin")}
+                            className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white pl-10"
+                            min={new Date().toISOString().split("T")[0]}
+                          />
+                          <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-brand-grey" />
+                        </div>
+                        {errors.starttermin && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.starttermin.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Einsatzregion / PLZ */}
+                      <div className="space-y-2">
+                        <Label htmlFor="plz" className="font-semibold text-brand-navy">Einsatzregion / PLZ *</Label>
+                        <Input
+                          type="text"
+                          id="plz"
+                          placeholder="z.B. 42799 oder Leichlingen"
+                          {...register("plz")}
+                          className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                        />
+                        {errors.plz && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.plz.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Abholung oder Lieferung */}
+                      <div className="space-y-2">
+                        <Label htmlFor="bereitstellung" className="font-semibold text-brand-navy">Bereitstellung *</Label>
+                        <Select
+                          value={watch("bereitstellung")}
+                          onValueChange={(val) => setValue("bereitstellung", val, { shouldValidate: true })}
+                        >
+                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+                            <SelectValue placeholder="Bitte wählen..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="abholung">Selbstabholung in Leichlingen</SelectItem>
+                            <SelectItem value="lieferung">Lieferung an Einsatzort</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.bereitstellung && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.bereitstellung.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Fahrzeugklasse über 7,5t? */}
+                      <div className="space-y-3 md:col-span-2">
+                        <Label className="font-semibold text-brand-navy">Fahrzeugklasse über 7,5t? *</Label>
+                        <RadioGroup
+                          value={watch("ueber75t")}
+                          onValueChange={(val) => setValue("ueber75t", val, { shouldValidate: true })}
+                          className="flex flex-col sm:flex-row gap-4"
+                        >
+                          <div className="flex items-center space-x-2 border border-brand-grey/20 rounded-lg px-4 py-3 bg-white hover:border-brand-cyan transition-colors flex-1 cursor-pointer">
+                            <RadioGroupItem value="ja" id="ueber-ja" className="text-brand-cyan focus:ring-brand-cyan" />
+                            <Label htmlFor="ueber-ja" className="font-medium text-brand-navy cursor-pointer w-full">Ja, über 7,5t</Label>
+                          </div>
+                          <div className="flex items-center space-x-2 border border-brand-grey/20 rounded-lg px-4 py-3 bg-white hover:border-brand-cyan transition-colors flex-1 cursor-pointer">
+                            <RadioGroupItem value="nein" id="ueber-nein" className="text-brand-cyan focus:ring-brand-cyan" />
+                            <Label htmlFor="ueber-nein" className="font-medium text-brand-navy cursor-pointer w-full">Nein, bis 7,5t</Label>
+                          </div>
+                        </RadioGroup>
+                        {errors.ueber75t && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.ueber75t.message as string}</span>
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    {errors.starttermin && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.starttermin.message}</span>
-                      </p>
-                    )}
-                  </div>
 
-                  {/* Einsatzregion / PLZ */}
-                  <div className="space-y-2">
-                    <Label htmlFor="plz" className="font-semibold text-brand-navy">Einsatzregion / PLZ *</Label>
-                    <Input
-                      type="text"
-                      id="plz"
-                      placeholder="z.B. 42799 oder Leichlingen"
-                      {...register("plz")}
-                      className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
-                    />
-                    {errors.plz && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.plz.message}</span>
-                      </p>
-                    )}
-                  </div>
+                    {/* Ihre Nachricht / Sonderwünsche */}
+                    <div className="space-y-2">
+                      <Label htmlFor="nachricht" className="font-semibold text-brand-navy">Ihre Nachricht / Sonderwünsche (optional)</Label>
+                      <Textarea
+                        id="nachricht"
+                        placeholder="Spezielle Anforderungen wie Ladebordwand, AHK, etc."
+                        {...register("nachricht")}
+                        className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan bg-white min-h-[100px]"
+                      />
+                    </div>
 
-                  {/* Abholung oder Lieferung */}
-                  <div className="space-y-2">
-                    <Label htmlFor="bereitstellung" className="font-semibold text-brand-navy">Bereitstellung *</Label>
-                    <Select
-                      value={watch("bereitstellung")}
-                      onValueChange={(val) => setValue("bereitstellung", val, { shouldValidate: true })}
+                    {/* Add-on Versicherungspaket */}
+                    <div className="p-4 rounded-xl bg-brand-light border border-brand-grey/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex items-start gap-3">
+                        <Shield className="h-5 w-5 text-brand-cyan shrink-0 mt-0.5" />
+                        <div>
+                          <Label htmlFor="versicherung" className="font-bold text-brand-navy cursor-pointer">
+                            Add-on Versicherungspaket hinzufügen
+                          </Label>
+                          <p className="text-xs text-brand-grey mt-0.5">
+                            Vollkaskoversicherung mit reduzierter Selbstbeteiligung für maximale Sorgenfreiheit im Einsatz.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center shrink-0">
+                        <Checkbox
+                          id="versicherung"
+                          checked={watch("versicherung")}
+                          onCheckedChange={(checked) => setValue("versicherung", !!checked)}
+                          className="h-6 w-6 border-brand-grey text-brand-cyan focus:ring-brand-cyan"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Button Schritt 1 */}
+                    <Button
+                      type="button"
+                      onClick={handleNextStep}
+                      className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex items-center justify-center gap-2"
                     >
-                      <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                        <SelectValue placeholder="Bitte wählen..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="abholung">Selbstabholung in Leichlingen</SelectItem>
-                        <SelectItem value="lieferung">Lieferung an Einsatzort</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.bereitstellung && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.bereitstellung.message}</span>
-                      </p>
-                    )}
+                      <span>Weiter zu Schritt 2</span>
+                      <ArrowRight className="h-5 w-5" />
+                    </Button>
                   </div>
-                </div>
-              </div>
+                )}
 
-              {/* Step 2: Contact Details */}
-              <div>
-                <h3 className="text-lg font-bold text-brand-navy mb-4 pb-2 border-b border-brand-grey/10 flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-cyan/20 text-brand-navy text-xs font-bold">2</span>
-                  Kontaktdaten & Absender
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Firma & Name */}
-                  <div className="space-y-2">
-                    <Label htmlFor="firmaName" className="font-semibold text-brand-navy">Firma & Name *</Label>
-                    <Input
-                      type="text"
-                      id="firmaName"
-                      placeholder="z.B. Logistik GmbH, Herr Schmidt"
-                      {...register("firmaName")}
-                      className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
-                    />
-                    {errors.firmaName && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.firmaName.message}</span>
-                      </p>
-                    )}
+                {/* SCHRITT 2: Kontaktdaten */}
+                {step === 2 && (
+                  <div className="space-y-8 animate-fadeIn">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Vorname */}
+                      <div className="space-y-2">
+                        <Label htmlFor="vorname" className="font-semibold text-brand-navy">Vorname *</Label>
+                        <Input
+                          type="text"
+                          id="vorname"
+                          placeholder="z.B. Max"
+                          {...register("vorname")}
+                          className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                        />
+                        {errors.vorname && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.vorname.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Nachname */}
+                      <div className="space-y-2">
+                        <Label htmlFor="nachname" className="font-semibold text-brand-navy">Nachname *</Label>
+                        <Input
+                          type="text"
+                          id="nachname"
+                          placeholder="z.B. Mustermann"
+                          {...register("nachname")}
+                          className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                        />
+                        {errors.nachname && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.nachname.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Unternehmen */}
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="unternehmen" className="font-semibold text-brand-navy">Unternehmen *</Label>
+                        <Input
+                          type="text"
+                          id="unternehmen"
+                          placeholder="z.B. Logistik GmbH"
+                          {...register("unternehmen")}
+                          className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                        />
+                        {errors.unternehmen && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.unternehmen.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* E-Mail */}
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="email" className="font-semibold text-brand-navy">E-Mail-Adresse *</Label>
+                        <Input
+                          type="email"
+                          id="email"
+                          placeholder="z.B. info@firma.de"
+                          {...register("email")}
+                          className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                        />
+                        {errors.email && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.email.message as string}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Telefon */}
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="telefon" className="font-semibold text-brand-navy">Telefonnummer (optional)</Label>
+                        <Input
+                          type="tel"
+                          id="telefon"
+                          placeholder="z.B. +49 170 1234567"
+                          {...register("telefon")}
+                          className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
+                        />
+                        {errors.telefon && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{errors.telefon.message as string}</span>
+                          </p>
+                        )}
+                        <p className="text-xs text-brand-grey mt-1">
+                          Lieber telefonisch? Festnetz-Durchwahl:{" "}
+                          <a href="tel:+4921758845535" className="text-brand-cyan hover:underline">
+                            +49 2175 8845535
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Buttons Schritt 2 */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button
+                        type="button"
+                        onClick={handlePrevStep}
+                        variant="outline"
+                        className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold py-6 flex-1 flex items-center justify-center gap-2"
+                      >
+                        <ArrowLeft className="h-5 w-5" />
+                        <span>Zurück</span>
+                      </Button>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1"
+                      >
+                        {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
+                      </Button>
+                    </div>
                   </div>
+                )}
 
-                  {/* Telefon */}
-                  <div className="space-y-2">
-                    <Label htmlFor="telefon" className="font-semibold text-brand-navy">Telefonnummer *</Label>
-                    <Input
-                      type="tel"
-                      id="telefon"
-                      placeholder="z.B. +49 170 1234567"
-                      {...register("telefon")}
-                      className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
-                    />
-                    {errors.telefon && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.telefon.message}</span>
-                      </p>
-                    )}
-                    <p className="text-xs text-brand-grey mt-1">
-                      Lieber telefonisch? Festnetz-Durchwahl:{" "}
-                      <a href="tel:+4921758845535" className="text-brand-cyan hover:underline">
-                        +49 2175 8845535
-                      </a>
-                    </p>
-                  </div>
-
-                  {/* E-Mail */}
-                  <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="email" className="font-semibold text-brand-navy">E-Mail *</Label>
-                    <Input
-                      type="email"
-                      id="email"
-                      placeholder="z.B. info@firma.de"
-                      {...register("email")}
-                      className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white"
-                    />
-                    {errors.email && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        <span>{errors.email.message}</span>
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Nachricht (Optional) */}
-                <div className="mt-6 space-y-2">
-                  <Label htmlFor="nachricht" className="font-semibold text-brand-navy">Ihre Nachricht / Sonderwünsche (optional)</Label>
-                  <Textarea
-                    id="nachricht"
-                    placeholder="Spezielle Anforderungen wie Ladebordwand, AHK, etc."
-                    {...register("nachricht")}
-                    className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan bg-white min-h-[100px]"
-                  />
-                </div>
-              </div>
-
-              {/* Step 3: Add-on Options */}
-              <div className="p-4 rounded-xl bg-brand-light border border-brand-grey/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-start gap-3">
-                  <Shield className="h-5 w-5 text-brand-cyan shrink-0 mt-0.5" />
-                  <div>
-                    <Label htmlFor="versicherung" className="font-bold text-brand-navy cursor-pointer">
-                      Add-on Versicherungspaket hinzufügen
-                    </Label>
-                    <p className="text-xs text-brand-grey mt-0.5">
-                      Vollkaskoversicherung mit reduzierter Selbstbeteiligung für maximale Sorgenfreiheit im Einsatz.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center shrink-0">
-                  <Checkbox
-                    id="versicherung"
-                    checked={watch("versicherung")}
-                    onCheckedChange={(checked) => setValue("versicherung", !!checked)}
-                    className="h-6 w-6 border-brand-grey text-brand-cyan focus:ring-brand-cyan"
-                  />
-                </div>
-              </div>
-
-              {/* Hidden Fields */}
-              <input type="hidden" {...register("offer_type")} />
-              <input type="hidden" {...register("lead_path")} />
-              <input type="hidden" {...register("page_variant")} />
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98"
-              >
-                {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
-              </Button>
-            </form>
+                {/* Hidden Fields */}
+                <input type="hidden" {...register("offer_type")} />
+                <input type="hidden" {...register("lead_path")} />
+                <input type="hidden" {...register("page_variant")} />
+              </form>
+            </div>
           )}
         </div>
       </div>

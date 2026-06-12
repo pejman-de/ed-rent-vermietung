@@ -24,7 +24,6 @@ const formSchema = z.object({
   }),
   plz: z.string().min(3, "Bitte geben Sie eine gültige PLZ oder Region ein."),
   bereitstellung: z.string().min(1, "Bitte wählen Sie eine Option."),
-  ueber75t: z.string().min(1, "Bitte wählen Sie eine Option."),
   nachricht: z.string().optional(),
   versicherung: z.boolean(),
 
@@ -48,7 +47,6 @@ interface FormData {
   starttermin: string;
   plz: string;
   bereitstellung: string;
-  ueber75t: string;
   nachricht?: string;
   versicherung: boolean;
   vorname: string;
@@ -116,7 +114,6 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
       starttermin: "",
       plz: "",
       bereitstellung: "",
-      ueber75t: "",
       nachricht: "",
       versicherung: false,
       vorname: "",
@@ -148,7 +145,6 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
       "starttermin",
       "plz",
       "bereitstellung",
-      "ueber75t",
     ]);
     if (valid) {
       setStep(2);
@@ -187,19 +183,19 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
   };
 
   return (
-    <section id="contact-form" ref={ref} className="py-20 bg-brand-light scroll-mt-20">
+    <section id="contact-form" ref={ref} className="py-12 md:py-20 bg-brand-light scroll-mt-20">
       <div className="container max-w-4xl">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
+        <div className="text-center mb-6 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-navy md:text-4xl">
             Ihr Mietangebot in 24h.
           </h2>
-          <p className="mt-3 text-lg text-brand-grey">
+          <p className="mt-2 text-sm sm:text-base md:text-lg text-brand-grey max-w-xl mx-auto">
             Kostenlos, unverbindlich und ohne Verkaufsgespräch. Formular ausfüllen, Angebot abwarten, fertig.
           </p>
         </div>
 
         {/* Form Container with Shadow */}
-        <div className="bg-white rounded-2xl border border-brand-grey/15 p-6 md:p-10 shadow-xl relative overflow-hidden">
+        <div className="bg-white rounded-xl md:rounded-2xl border border-brand-grey/15 p-4 sm:p-6 md:p-10 shadow-xl relative overflow-hidden">
           
           {isSuccess ? (
             <div className="flex flex-col items-center justify-center py-12 text-center space-y-6">
@@ -226,44 +222,44 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
             <div className="space-y-8">
               {/* Fortschrittsanzeige */}
               <div className="relative flex items-center justify-between max-w-md mx-auto mb-10">
-                {/* Verbindungslinie */}
-                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-brand-grey/20 -z-0">
-                  <div 
-                    className="h-full bg-brand-cyan transition-all duration-300"
-                    style={{ width: step === 2 ? "100%" : "0%" }}
-                  />
-                </div>
-
-                {/* Schritt 1 */}
-                <div className="flex flex-col items-center relative z-10">
-                  <div 
-                    className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
-                      step === 2 
-                        ? "bg-brand-cyan text-brand-navy" 
-                        : "bg-brand-cyan text-brand-navy ring-4 ring-brand-cyan/20"
-                    }`}
-                  >
-                    {step === 2 ? <CheckCircle2 className="h-5 w-5" /> : "1"}
-                  </div>
-                  <span className="text-xs font-bold text-brand-navy mt-2">Fahrzeugdetails</span>
-                </div>
-
-                {/* Schritt 2 */}
-                <div className="flex flex-col items-center relative z-10">
-                  <div 
-                    className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
-                      step === 2 
-                        ? "bg-brand-cyan text-brand-navy ring-4 ring-brand-cyan/20" 
-                        : "bg-brand-cyan/20 text-brand-navy"
-                    }`}
-                  >
-                    2
-                  </div>
-                  <span className="text-xs font-bold text-brand-navy mt-2">Ihre Kontaktdaten</span>
-                </div>
+              {/* Verbindungslinie */}
+              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-brand-grey/20 -z-0">
+                <div 
+                  className="h-full bg-brand-cyan transition-all duration-300"
+                  style={{ width: step === 2 ? "100%" : "0%" }}
+                />
               </div>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 overflow-hidden">
+              {/* Schritt 1 */}
+              <div className="flex flex-col items-center relative z-10">
+                <div 
+                  className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-300 ${
+                    step === 2 
+                      ? "bg-brand-cyan text-brand-navy" 
+                      : "bg-brand-cyan text-brand-navy ring-4 ring-brand-cyan/20"
+                  }`}
+                >
+                  {step === 2 ? <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" /> : "1"}
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold text-brand-navy mt-1.5">Fahrzeugdetails</span>
+              </div>
+
+              {/* Schritt 2 */}
+              <div className="flex flex-col items-center relative z-10">
+                <div 
+                  className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-300 ${
+                    step === 2 
+                      ? "bg-brand-cyan text-brand-navy ring-4 ring-brand-cyan/20" 
+                      : "bg-brand-cyan/20 text-brand-navy"
+                  }`}
+                >
+                  2
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold text-brand-navy mt-1.5">Ihre Kontaktdaten</span>
+              </div>
+              </div>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-8 overflow-hidden">
                 <AnimatePresence mode="wait">
                   {/* SCHRITT 1: Fahrzeugdetails */}
                   {step === 1 && (
@@ -273,9 +269,9 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="space-y-8"
+                      className="space-y-4 sm:space-y-6"
                     >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                       {/* Fahrzeugtyp */}
                       <div className="space-y-2">
                         <Label htmlFor="fahrzeugtyp" className="font-semibold text-brand-navy">Fahrzeugtyp *</Label>
@@ -415,53 +411,29 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                         )}
                       </div>
 
-                      {/* Fahrzeugklasse über 7,5t? */}
-                      <div className="space-y-3 md:col-span-2">
-                        <Label className="font-semibold text-brand-navy">Fahrzeugklasse über 7,5t? *</Label>
-                        <RadioGroup
-                          value={watch("ueber75t")}
-                          onValueChange={(val) => setValue("ueber75t", val, { shouldValidate: true })}
-                          className="flex flex-col sm:flex-row gap-4"
-                        >
-                          <div className="flex items-center space-x-2 border border-brand-grey/20 rounded-lg px-4 py-3 bg-white hover:border-brand-cyan transition-colors flex-1 cursor-pointer">
-                            <RadioGroupItem value="ja" id="ueber-ja" className="text-brand-cyan focus:ring-brand-cyan" />
-                            <Label htmlFor="ueber-ja" className="font-medium text-brand-navy cursor-pointer w-full">Ja, über 7,5t</Label>
-                          </div>
-                          <div className="flex items-center space-x-2 border border-brand-grey/20 rounded-lg px-4 py-3 bg-white hover:border-brand-cyan transition-colors flex-1 cursor-pointer">
-                            <RadioGroupItem value="nein" id="ueber-nein" className="text-brand-cyan focus:ring-brand-cyan" />
-                            <Label htmlFor="ueber-nein" className="font-medium text-brand-navy cursor-pointer w-full">Nein, bis 7,5t</Label>
-                          </div>
-                        </RadioGroup>
-                        {errors.ueber75t && (
-                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                            <AlertCircle className="h-3.5 w-3.5" />
-                            <span>{errors.ueber75t.message as string}</span>
-                          </p>
-                        )}
-                      </div>
                     </div>
 
                     {/* Ihre Nachricht / Sonderwünsche */}
-                    <div className="space-y-2">
-                      <Label htmlFor="nachricht" className="font-semibold text-brand-navy">Ihre Nachricht / Sonderwünsche (optional)</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="nachricht" className="font-semibold text-brand-navy text-sm sm:text-base">Ihre Nachricht / Sonderwünsche (optional)</Label>
                       <Textarea
                         id="nachricht"
                         placeholder="Spezielle Anforderungen wie Ladebordwand, AHK, etc."
                         {...register("nachricht")}
-                        className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan bg-white min-h-[100px]"
+                        className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan bg-white min-h-[80px] text-sm sm:text-base p-2.5"
                       />
                     </div>
 
                     {/* Add-on Versicherungspaket */}
-                    <div className="p-4 rounded-xl bg-brand-light border border-brand-grey/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="flex items-start gap-3">
-                        <Shield className="h-5 w-5 text-brand-cyan shrink-0 mt-0.5" />
+                    <div className="p-3 sm:p-4 rounded-xl bg-brand-light border border-brand-grey/10 flex items-center justify-between gap-3">
+                      <div className="flex items-start gap-2.5">
+                        <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-brand-cyan shrink-0 mt-0.5" />
                         <div>
-                          <Label htmlFor="versicherung" className="font-bold text-brand-navy cursor-pointer">
+                          <Label htmlFor="versicherung" className="font-bold text-brand-navy text-xs sm:text-sm cursor-pointer">
                             Add-on Versicherungspaket hinzufügen
                           </Label>
-                          <p className="text-xs text-brand-grey mt-0.5">
-                            Vollkaskoversicherung mit reduzierter Selbstbeteiligung für maximale Sorgenfreiheit im Einsatz.
+                          <p className="text-[10px] sm:text-xs text-brand-grey mt-0.5 leading-tight">
+                            Vollkaskoversicherung mit reduzierter Selbstbeteiligung für maximale Sorgenfreiheit.
                           </p>
                         </div>
                       </div>
@@ -470,7 +442,7 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                           id="versicherung"
                           checked={watch("versicherung")}
                           onCheckedChange={(checked) => setValue("versicherung", !!checked)}
-                          className="h-6 w-6 border-brand-grey text-brand-cyan focus:ring-brand-cyan"
+                          className="h-5 w-5 sm:h-6 sm:w-6 border-brand-grey text-brand-cyan focus:ring-brand-cyan"
                         />
                       </div>
                     </div>
@@ -479,10 +451,10 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       <Button
                         type="button"
                         onClick={handleNextStep}
-                        className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex items-center justify-center gap-2"
+                        className="w-full bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-sm sm:text-base py-4 sm:py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex items-center justify-center gap-2"
                       >
                         <span>Weiter zu Schritt 2</span>
-                        <ArrowRight className="h-5 w-5" />
+                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                       </Button>
                     </motion.div>
                   )}
@@ -495,9 +467,9 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="space-y-8"
+                      className="space-y-4 sm:space-y-6"
                     >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                       {/* Vorname */}
                       <div className="space-y-2">
                         <Label htmlFor="vorname" className="font-semibold text-brand-navy">Vorname *</Label>
@@ -591,20 +563,20 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                     </div>
 
                       {/* Buttons Schritt 2 */}
-                      <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                         <Button
                           type="button"
                           onClick={handlePrevStep}
                           variant="outline"
-                          className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold py-6 flex-1 flex items-center justify-center gap-2"
+                          className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold py-4 sm:py-6 flex-1 flex items-center justify-center gap-2 text-sm sm:text-base order-2 sm:order-1"
                         >
-                          <ArrowLeft className="h-5 w-5" />
+                          <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                           <span>Zurück</span>
                         </Button>
                         <Button
                           type="submit"
                           disabled={isSubmitting}
-                          className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-base py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1"
+                          className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-sm sm:text-base py-4 sm:py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1 order-1 sm:order-2"
                         >
                           {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
                         </Button>

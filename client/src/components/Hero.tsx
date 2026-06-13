@@ -48,7 +48,7 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
               onClick={onExploreClick}
               variant="outline"
               size="lg"
-              className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold text-base px-8 py-6 transition-all active:scale-97"
+              className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold text-base px-8 py-6 transition-all active:scale-97" style={{height: '48px'}}
             >
               Fahrzeuge ansehen
             </Button>

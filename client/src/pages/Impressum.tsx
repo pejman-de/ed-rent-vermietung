@@ -129,7 +129,7 @@ export default function Impressum() {
                 <div className="space-y-2 text-sm text-brand-grey">
                   <p className="font-semibold text-brand-navy">Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:</p>
                   <p className="font-mono bg-brand-light p-2 rounded border border-brand-grey/10 text-brand-navy text-xs">
-                    DE 33598989106
+                    DE335989106
                   </p>
                 </div>
               </div>

@@ -275,13 +275,13 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       {/* Fahrzeugtyp */}
                       <div className="space-y-2">
                         <Label htmlFor="fahrzeugtyp" className="font-semibold text-brand-navy">Fahrzeugtyp *</Label>
-                        <Select
-                          value={watch("fahrzeugtyp")}
-                          onValueChange={(val) => setValue("fahrzeugtyp", val, { shouldValidate: true })}
-                        >
-                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                            <SelectValue placeholder="Bitte wählen..." />
-                          </SelectTrigger>
+	                        <Select
+	                          value={watch("fahrzeugtyp")}
+	                          onValueChange={(val) => setValue("fahrzeugtyp", val, { shouldValidate: true })}
+	                        >
+	                          <SelectTrigger aria-label="Fahrzeugtyp" className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+	                            <SelectValue placeholder="Bitte wählen..." />
+	                          </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="sprinter">Sprinter (bis 3,5t)</SelectItem>
                             <SelectItem value="transporter">Transporter (3,5t - 7,5t)</SelectItem>
@@ -302,13 +302,13 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       {/* Gewünschte Tonnage */}
                       <div className="space-y-2">
                         <Label htmlFor="tonnage" className="font-semibold text-brand-navy">Gewünschte Tonnage *</Label>
-                        <Select
-                          value={watch("tonnage")}
-                          onValueChange={(val) => setValue("tonnage", val, { shouldValidate: true })}
-                        >
-                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                            <SelectValue placeholder="Bitte wählen..." />
-                          </SelectTrigger>
+	                        <Select
+	                          value={watch("tonnage")}
+	                          onValueChange={(val) => setValue("tonnage", val, { shouldValidate: true })}
+	                        >
+	                          <SelectTrigger aria-label="Gewünschte Tonnage" className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+	                            <SelectValue placeholder="Bitte wählen..." />
+	                          </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="2_6t">2,6 t</SelectItem>
                             <SelectItem value="3_5t">3,5 t</SelectItem>
@@ -327,13 +327,13 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       {/* Mietdauer */}
                       <div className="space-y-2">
                         <Label htmlFor="mietdauer" className="font-semibold text-brand-navy">Mietdauer *</Label>
-                        <Select
-                          value={watch("mietdauer")}
-                          onValueChange={(val) => setValue("mietdauer", val, { shouldValidate: true })}
-                        >
-                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                            <SelectValue placeholder="Bitte wählen..." />
-                          </SelectTrigger>
+	                        <Select
+	                          value={watch("mietdauer")}
+	                          onValueChange={(val) => setValue("mietdauer", val, { shouldValidate: true })}
+	                        >
+	                          <SelectTrigger aria-label="Mietdauer" className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+	                            <SelectValue placeholder="Bitte wählen..." />
+	                          </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="1-7">Tagesmiete (1 - 7 Tage)</SelectItem>
                             <SelectItem value="8-30">Wochenmiete (8 - 30 Tage)</SelectItem>
@@ -391,13 +391,13 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                       {/* Abholung oder Lieferung */}
                       <div className="space-y-2">
                         <Label htmlFor="bereitstellung" className="font-semibold text-brand-navy">Bereitstellung *</Label>
-                        <Select
-                          value={watch("bereitstellung")}
-                          onValueChange={(val) => setValue("bereitstellung", val, { shouldValidate: true })}
-                        >
-                          <SelectTrigger className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
-                            <SelectValue placeholder="Bitte wählen..." />
-                          </SelectTrigger>
+	                        <Select
+	                          value={watch("bereitstellung")}
+	                          onValueChange={(val) => setValue("bereitstellung", val, { shouldValidate: true })}
+	                        >
+	                          <SelectTrigger aria-label="Bereitstellung" className="border-brand-grey/30 focus:border-brand-cyan focus:ring-brand-cyan h-11 bg-white">
+	                            <SelectValue placeholder="Bitte wählen..." />
+	                          </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="abholung">Selbstabholung in Leichlingen</SelectItem>
                             <SelectItem value="lieferung">Lieferung an Einsatzort</SelectItem>

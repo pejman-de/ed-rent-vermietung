@@ -757,7 +757,7 @@
   setInterval(reportLogs, CONFIG.reportInterval);
 
   // Report on page unload
-  window.addEventListener("beforeunload", function () {
+  window.addEventListener("pagehide", function () {
     var consoleLogs = store.consoleLogs;
     var networkRequests = store.networkRequests;
     var uiEvents = store.uiEvents;

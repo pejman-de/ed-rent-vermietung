@@ -96,6 +96,11 @@ export default function Hero({ onCtaClick, onExploreClick }: HeroProps) {
               src="https://d2xsxph8kpxj0f.cloudfront.net/310519663281979359/MSs49dKTPCBrBa2mMEGFXR/hero-trucks-o63nWYNkcFAJ4M2Z6GtHV7.webp"
               alt="ED Rent & Sale Nutzfahrzeug Flotte"
               className="h-full w-full object-cover"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              width="880"
+              height="495"
             />
             
             {/* Subtle Glassmorphism Overlay */}

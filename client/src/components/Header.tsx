@@ -15,6 +15,8 @@ export default function Header({ onCtaClick }: HeaderProps) {
             src="/manus-storage/ED_Rent_Logo_Cropped_1427a237.webp" 
             alt="ED Rent & Sale Logo" 
             className="h-14 md:h-16 w-auto object-contain"
+            width="177"
+            height="98"
           />
         </div>
 

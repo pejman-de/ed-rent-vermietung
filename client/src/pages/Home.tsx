@@ -1,15 +1,31 @@
 import { useRef, useState } from "react";
+import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import SocialProofBar from "@/components/SocialProofBar";
-import VehicleCategories from "@/components/VehicleCategories";
-import ProcessSection from "@/components/ProcessSection";
-import TrustMetrics from "@/components/TrustMetrics";
-import ProofBlock from "@/components/ProofBlock";
-import LeadForm from "@/components/LeadForm";
-import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+
+// Lazy loaded non-critical sections to reduce initial bundle size
+const VehicleCategories = lazy(() => import("@/components/VehicleCategories"));
+const ProcessSection = lazy(() => import("@/components/ProcessSection"));
+const TrustMetrics = lazy(() => import("@/components/TrustMetrics"));
+const ProofBlock = lazy(() => import("@/components/ProofBlock"));
+const LeadForm = lazy(() => import("@/components/LeadForm"));
+const FAQ = lazy(() => import("@/components/FAQ"));
+
+// Placeholder loading skeleton
+function SectionSkeleton() {
+  return (
+    <div className="w-full py-12 animate-pulse bg-brand-light/30">
+      <div className="container max-w-3xl space-y-4">
+        <div className="h-6 bg-brand-grey/20 rounded w-1/3 mx-auto" />
+        <div className="h-4 bg-brand-grey/10 rounded w-2/3 mx-auto" />
+        <div className="h-40 bg-brand-grey/5 rounded w-full mt-8" />
+      </div>
+    </div>
+  );
+}
 
 // Animation Variants for clean scroll-reveals
 const fadeInUp = {
@@ -74,65 +90,67 @@ export default function Home() {
           <SocialProofBar />
         </motion.div>
 
-        {/* Vehicle Categories */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <VehicleCategories onSelectCategory={handleSelectCategory} />
-        </motion.div>
+        <Suspense fallback={<SectionSkeleton />}>
+          {/* Vehicle Categories */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+          >
+            <VehicleCategories onSelectCategory={handleSelectCategory} />
+          </motion.div>
 
-        {/* Process Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <ProcessSection />
-        </motion.div>
+          {/* Process Section */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+          >
+            <ProcessSection />
+          </motion.div>
 
-        {/* Trust Metrics */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <TrustMetrics />
-        </motion.div>
+          {/* Trust Metrics */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+          >
+            <TrustMetrics />
+          </motion.div>
 
-        {/* Proof Block */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <ProofBlock />
-        </motion.div>
+          {/* Proof Block */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+          >
+            <ProofBlock />
+          </motion.div>
 
-        {/* Lead Form Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <LeadForm ref={formRef} selectedCategory={selectedCategory} />
-        </motion.div>
+          {/* Lead Form Section */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+          >
+            <LeadForm ref={formRef} selectedCategory={selectedCategory} />
+          </motion.div>
 
-        {/* FAQ Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <FAQ />
-        </motion.div>
+          {/* FAQ Section */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+          >
+            <FAQ />
+          </motion.div>
+        </Suspense>
       </main>
 
       {/* Footer */}

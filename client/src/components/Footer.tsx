@@ -22,6 +22,8 @@ export default function Footer({ onScrollToTop }: FooterProps) {
                 src="/manus-storage/ED_Rent_Logo_Cropped_1427a237.webp" 
                 alt="ED Rent & Sale Logo" 
                 className="h-16 md:h-20 w-auto object-contain brightness-0 invert"
+                width="177"
+                height="98"
               />
             </div>
             <p className="text-sm text-brand-grey max-w-sm leading-relaxed">

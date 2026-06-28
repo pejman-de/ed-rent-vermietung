@@ -22,6 +22,10 @@ export default function SocialProofBar() {
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663281979359/MSs49dKTPCBrBa2mMEGFXR/hero-trucks-o63nWYNkcFAJ4M2Z6GtHV7.webp"
                 alt="Fahrzeughof in Leichlingen"
                 className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+                decoding="async"
+                width="735"
+                height="459"
               />
               <div className="absolute top-3 left-3 bg-brand-navy/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
                 <Award className="h-3.5 w-3.5 text-brand-cyan" />
@@ -43,6 +47,10 @@ export default function SocialProofBar() {
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663281979359/MSs49dKTPCBrBa2mMEGFXR/workshop-8RJprvZRnAsjf5wqqiQyRa.webp"
                 alt="Professionelle LKW Werkstatt"
                 className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+                decoding="async"
+                width="735"
+                height="459"
               />
               <div className="absolute top-3 left-3 bg-brand-navy/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-brand-cyan" />
@@ -64,6 +72,10 @@ export default function SocialProofBar() {
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663281979359/MSs49dKTPCBrBa2mMEGFXR/handover-UFeNb2qdxiVJQknhkTnyDf.webp"
                 alt="Fahrzeugübergabe an Kunden"
                 className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+                decoding="async"
+                width="735"
+                height="459"
               />
               <div className="absolute top-3 left-3 bg-brand-navy/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
                 <ThumbsUp className="h-3.5 w-3.5 text-brand-cyan" />

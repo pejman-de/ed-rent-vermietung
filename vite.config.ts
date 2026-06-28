@@ -219,6 +219,28 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("framer-motion")) {
+              return "vendor-framer-motion";
+            }
+            if (id.includes("react-hook-form") || id.includes("zod") || id.includes("@hookform")) {
+              return "vendor-forms";
+            }
+            if (id.includes("lucide-react")) {
+              return "vendor-icons";
+            }
+            if (id.includes("@radix-ui")) {
+              return "vendor-radix";
+            }
+            return "vendor"; // Other third party libraries
+          }
+        }
+      }
+    }
   },
   server: {
     port: 3000,

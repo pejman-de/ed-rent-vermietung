@@ -8,8 +8,8 @@ import Home from "./pages/Home";
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />

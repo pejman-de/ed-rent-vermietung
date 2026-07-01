@@ -10,8 +10,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { CalendarIcon, Shield, CheckCircle2, AlertCircle, ArrowRight, ArrowLeft } from "lucide-react";
+import { CalendarIcon, Shield, CheckCircle2, AlertCircle, ArrowRight, ArrowLeft, Upload, FileText, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 // Zod validation schema
 const formSchema = z.object({
@@ -95,6 +96,59 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
   const [step, setStep] = useState<1 | 2>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  const uploadDocument = trpc.leads.uploadDocument.useMutation();
+  const createLead = trpc.leads.create.useMutation();
+
+  const MAX_FILE_BYTES = 8 * 1024 * 1024; // 8 MB
+  const ACCEPTED_TYPES = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+  ];
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError(null);
+    const file = e.target.files?.[0] ?? null;
+    if (!file) {
+      setSelectedFile(null);
+      return;
+    }
+    if (file.size > MAX_FILE_BYTES) {
+      setFileError("Die Datei ist zu groß (maximal 8 MB).");
+      setSelectedFile(null);
+      e.target.value = "";
+      return;
+    }
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      setFileError("Bitte laden Sie eine PDF- oder Bilddatei (JPG, PNG, WEBP) hoch.");
+      setSelectedFile(null);
+      e.target.value = "";
+      return;
+    }
+    setSelectedFile(file);
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    setFileError(null);
+  };
+
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Strip the data URL prefix, keep only the base64 payload
+        const base64 = result.includes(",") ? result.split(",")[1] : result;
+        resolve(base64);
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
 
   const {
     register,
@@ -155,27 +209,52 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
     setStep(1);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    
-    try {
-      // Calculate Lead Score
-      const leadScore = calculateLeadScore(data);
-      
-      // Log the payload and score to console as required by spec
-      console.group("📥 ED Rent & Sale - Lead Form Submission");
-      console.log("Payload:", data);
-      console.log("Lead Score Result:", leadScore);
-      console.groupEnd();
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
+    try {
+      // 1. Upload the optional document first (if provided)
+      let fileRef: { key: string; url: string; fileName: string } | null = null;
+      if (selectedFile) {
+        const dataBase64 = await fileToBase64(selectedFile);
+        fileRef = await uploadDocument.mutateAsync({
+          fileName: selectedFile.name,
+          mimeType: selectedFile.type || "application/octet-stream",
+          dataBase64,
+        });
+      }
+
+      // 2. Create the lead with the (optional) file reference
+      const result = await createLead.mutateAsync({
+        fahrzeugtyp: data.fahrzeugtyp,
+        tonnage: data.tonnage,
+        mietdauer: data.mietdauer,
+        starttermin: data.starttermin,
+        plz: data.plz,
+        bereitstellung: data.bereitstellung,
+        versicherung: data.versicherung,
+        nachricht: data.nachricht,
+        vorname: data.vorname,
+        nachname: data.nachname,
+        unternehmen: data.unternehmen,
+        email: data.email,
+        telefon: data.telefon,
+        fileKey: fileRef?.key,
+        fileUrl: fileRef?.url,
+        fileName: fileRef?.fileName,
+        offerType: data.offer_type,
+        pageVariant: data.page_variant,
+      });
+
+      console.info("[Lead] gespeichert", result);
+
       setIsSuccess(true);
       toast.success("Anfrage erfolgreich gesendet! Wir melden uns in Kürze.");
       reset();
+      removeFile();
       setStep(1); // Zurück auf Schritt 1 nach erfolgreichem Reset
     } catch (error) {
+      console.error("[Lead] Übermittlung fehlgeschlagen", error);
       toast.error("Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut.");
     } finally {
       setIsSubmitting(false);
@@ -560,6 +639,65 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                         )}
 
                       </div>
+
+                      {/* Dokument-Upload (optional) */}
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="dokument" className="font-semibold text-brand-navy">
+                          Dokument hochladen (optional)
+                        </Label>
+                        <p className="text-xs text-brand-grey -mt-1">
+                          Gewerbeanmeldung oder Führerschein. Beschleunigt die Bearbeitung Ihrer Anfrage. PDF, JPG, PNG oder WEBP, maximal 8 MB.
+                        </p>
+
+                        {!selectedFile ? (
+                          <label
+                            htmlFor="dokument"
+                            className="mt-1 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-brand-grey/30 bg-white px-4 py-6 text-center cursor-pointer transition-colors hover:border-brand-cyan hover:bg-brand-cyan/5"
+                          >
+                            <Upload className="h-6 w-6 text-brand-cyan" />
+                            <span className="text-sm font-medium text-brand-navy">
+                              Datei auswählen oder hierher ziehen
+                            </span>
+                            <span className="text-[11px] text-brand-grey">
+                              PDF, JPG, PNG, WEBP (max. 8 MB)
+                            </span>
+                            <input
+                              id="dokument"
+                              type="file"
+                              accept=".pdf,image/jpeg,image/png,image/webp,application/pdf"
+                              onChange={handleFileChange}
+                              className="sr-only"
+                            />
+                          </label>
+                        ) : (
+                          <div className="mt-1 flex items-center justify-between gap-3 rounded-xl border border-brand-grey/20 bg-white px-4 py-3">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <FileText className="h-5 w-5 text-brand-cyan shrink-0" />
+                              <div className="min-w-0">
+                                <p className="text-sm font-medium text-brand-navy truncate">{selectedFile.name}</p>
+                                <p className="text-[11px] text-brand-grey">
+                                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={removeFile}
+                              aria-label="Datei entfernen"
+                              className="shrink-0 rounded-full p-1.5 text-brand-grey transition-colors hover:bg-red-50 hover:text-red-500"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
+
+                        {fileError && (
+                          <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>{fileError}</span>
+                          </p>
+                        )}
+                      </div>
                     </div>
 
                       {/* Buttons Schritt 2 */}
@@ -576,9 +714,14 @@ const LeadForm = forwardRef<HTMLDivElement, LeadFormProps>(({ selectedCategory }
                         <Button
                           type="submit"
                           disabled={isSubmitting}
-                          className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-sm sm:text-base py-4 sm:py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1 order-1 sm:order-2"
+                          className="bg-brand-cyan text-brand-navy hover:bg-brand-cyan/90 font-bold text-sm sm:text-base py-4 sm:py-6 shadow-lg shadow-brand-cyan/10 hover:shadow-brand-cyan/20 transition-all active:scale-98 flex-1 order-1 sm:order-2 flex items-center justify-center gap-2"
                         >
-                          {isSubmitting ? "Anfrage wird gesendet..." : "Mietangebot anfordern"}
+                          {isSubmitting && <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />}
+                          {isSubmitting
+                            ? uploadDocument.isPending
+                              ? "Dokument wird hochgeladen..."
+                              : "Anfrage wird gesendet..."
+                            : "Mietangebot anfordern"}
                         </Button>
                       </div>
                     </motion.div>

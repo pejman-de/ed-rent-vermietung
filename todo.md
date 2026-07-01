@@ -1,0 +1,21 @@
+# Project TODO - Full-Stack Upgrade & File Storage
+
+- [x] Upgrade project to full-stack (web-db-user: db, server, user)
+- [x] Resolve merge conflicts in Home.tsx (preserved landing page)
+- [x] Fix package.json build script to point to server/_core/index.ts + keep prerender
+- [x] Remove obsolete static server/index.ts
+- [x] Install full-stack dependencies (drizzle, trpc, aws-sdk)
+- [x] Verify TypeScript check passes and dev server runs
+- [x] Add `leads` table to drizzle/schema.ts (with file attachment fields)
+- [x] Generate migration SQL and apply via webdev_execute_sql
+- [x] Add DB helpers in server/db.ts (insertLead, getLeads)
+- [x] Add file upload procedure (uploadDocument) using storagePut in server/routers.ts
+- [x] Add lead submission procedure (leads.create) in server/routers.ts
+- [x] Extend LeadForm.tsx with file upload field (Gewerbeanmeldung/Führerschein)
+- [x] Wire LeadForm.tsx to tRPC mutations (upload + create lead)
+- [x] Notify owner on new lead via notifyOwner
+- [x] Ensure SSG prerendering still works with tRPC provider (fixed prerender hang with explicit exit)
+- [x] Write vitest tests for lead procedures
+- [x] Run tests and verify all pass
+- [x] Build test (pnpm run build completes cleanly)
+- [ ] Save checkpoint and deliver

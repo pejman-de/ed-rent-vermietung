@@ -51,10 +51,15 @@ async function prerender() {
     console.log("🎉 Pre-rendering completed successfully!");
   } catch (error) {
     console.error("❌ Pre-rendering failed:", error);
-    process.exit(1);
-  } finally {
     await vite.close();
+    process.exit(1);
   }
+
+  // Explicitly close the Vite server and force-exit. Some plugins keep the
+  // event loop alive (open sockets/watchers), which would otherwise hang the
+  // build after pre-rendering has already finished writing all HTML files.
+  await vite.close();
+  process.exit(0);
 }
 
 prerender();
